@@ -60,9 +60,10 @@
       </modal>
 
       <b-dropdown variant="success" id="dropdown-1" :text="$root.store.username">
-        <b-dropdown-item>Favorites recipes</b-dropdown-item>
-        <b-dropdown-item>My recipes</b-dropdown-item>
-        <b-dropdown-item>Family recipes</b-dropdown-item>
+        
+        <b-dropdown-item><router-link :to="{ name: 'FamilyRecipes' }">Family recipes</router-link></b-dropdown-item>
+        <b-dropdown-item><router-link :to="{ name: 'FavoriteRecipes' }">Favorite recipes</router-link></b-dropdown-item>
+        <b-dropdown-item><router-link :to="{ name: 'MyRecipes' }">My recipes</router-link></b-dropdown-item>
         <b-dropdown-divider></b-dropdown-divider>
         <b-dropdown-item active>Active action</b-dropdown-item>
         <b-dropdown-item disabled>Disabled action</b-dropdown-item>

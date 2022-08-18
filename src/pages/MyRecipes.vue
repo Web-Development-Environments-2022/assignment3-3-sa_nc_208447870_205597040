@@ -11,7 +11,7 @@
 import RecipePreview from '../components/RecipePreview.vue';
 
 export default{
-    name:"FamilyRecipes",
+    name:"MyRecipes",
     data(){
         return {
             recipes: null
