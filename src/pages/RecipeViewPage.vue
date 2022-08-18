@@ -11,6 +11,9 @@
             <div class="mb-3">
               <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
               <div>Likes: {{ recipe.aggregateLikes }} likes</div>
+              <div v-if="recipe.glutenFree"> gluten-Free</div>
+              <div v-if="recipe.vegan"> vegan</div>
+              <div v-if="recipe.vegetarian"> vegetarian</div>
             </div>
             Ingredients:
             <ul>
@@ -29,6 +32,9 @@
                 {{ s.step }}
               </li>
             </ol>
+          </div>
+          <div class="wrapped">
+            Serving: {{ recipe.serving }}
           </div>
         </div>
       </div>
