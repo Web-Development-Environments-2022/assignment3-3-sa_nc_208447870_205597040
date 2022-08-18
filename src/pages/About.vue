@@ -25,7 +25,7 @@
             <div class="card">
             <img src="../assets/sha.jpeg" alt="Mike" style="width:100%">
             <div class="container">
-                <h2>Shaher Adam</h2>
+                <h2>Shahar Adam</h2>
                 <p class="title">Art Director & Designer</p>
                 <p>Some text that describes me lorem ipsum ipsum lorem.</p>
                 <p>mike@example.com</p>
