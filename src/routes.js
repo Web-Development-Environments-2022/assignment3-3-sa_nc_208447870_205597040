@@ -8,6 +8,11 @@ const routes = [
     component: Main,
   },
   {
+    path: "/About",
+    name: "about",
+    component: () => import("./pages/About"),
+  },
+  {
     path: "/register",
     name: "register",
     component: () => import("./pages/RegisterPage"),

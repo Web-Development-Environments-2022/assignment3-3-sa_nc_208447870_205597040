@@ -13,6 +13,12 @@
       <ul class="recipe-overview">
         <li>{{ recipe.readyInMinutes }} minutes</li>
         <li>{{ recipe.aggregateLikes }} likes</li>
+
+        <li v-if="recipe.glutenFree"> gluten-Free</li>
+        <li v-if="recipe.vegan"> vegan</li>
+        <li v-if="recipe.vegetarian"> vegetarian</li>
+        <li ></li>
+
       </ul>
     </div>
   </router-link>
