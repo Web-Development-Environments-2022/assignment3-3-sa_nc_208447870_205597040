@@ -2,73 +2,14 @@
 
   <div id="app">
     
-    <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">Navbar</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li >
-            <router-link :to="{ name: 'main' }" class="nav-link">Vue Recipes <span class="sr-only">(current)</span></router-link>
-          </li>
-          <li class="nav-item">
-            <router-link :to="{ name: 'search' }" class="nav-link">Search <span class="sr-only">(current)</span></router-link>
-          </li>
-          <li class="nav-item">
-            <router-link :to="{ name: 'about' }" class="nav-link">About <span class="sr-only">(current)</span></router-link>
-          </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li>
-
-          <li class="nav-item">
-            <a><modal :show="showModal" class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</modal></a>
-            <modal :show="showModal" @close="showModal = false">
-              <h3>custom header</h3>
-            </modal> 
-          </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-        
-        
-      </div>
-    </nav> -->
     <div id="nav">
       <router-link :to="{ name: 'main' }" class="btn btn-outline-success my-2 my-sm-0">Vue Recipes</router-link>
       <router-link :to="{ name: 'search' }" class="btn btn-outline-success my-2 my-sm-0">Search</router-link>
       <router-link :to="{ name: 'about' }" class="btn btn-outline-success my-2 my-sm-0">About</router-link>
 
       <!-- use the modal component, pass in the prop -->
-      <button class="btn btn-outline-success my-2 my-sm-0" id="show-modal" @click="showModal = true">Show Modal</button>
 
-      <modal :show="showModal" @close="showModal = false">
-          <h3>custom header</h3>
-      </modal>
-
-      <b-dropdown variant="success" id="dropdown-1" :text="$root.store.username">
-        
-        <b-dropdown-item><router-link :to="{ name: 'FamilyRecipes' }">Family recipes</router-link></b-dropdown-item>
-        <b-dropdown-item><router-link :to="{ name: 'FavoriteRecipes' }">Favorite recipes</router-link></b-dropdown-item>
-        <b-dropdown-item><router-link :to="{ name: 'MyRecipes' }">My recipes</router-link></b-dropdown-item>
-        <b-dropdown-divider></b-dropdown-divider>
-        <b-dropdown-item active>Active action</b-dropdown-item>
-        <b-dropdown-item disabled>Disabled action</b-dropdown-item>
-      </b-dropdown>
-
+      <modal :show="showModal" @close="showModal = false"></modal>
 
 
       <span id="side_btn" class="btn btn-outline-success my-2 my-sm-0" v-if="!$root.store.username">
@@ -77,17 +18,38 @@
         <router-link :to="{ name: 'login' }">Login</router-link>|
       </span>
       <span v-else>
-        {{ $root.store.username }}: <button @click="Logout">Logout</button>|
+        {{ $root.store.username }}: <button class="btn btn-outline-success my-2 my-sm-0" @click="Logout">Logout</button>|
         <button @click="CreateRecipe">Add recipe</button>|
+        <b-dropdown variant="success" id="dropdown-1" :text="$root.store.username">
+          <b-dropdown-item><router-link :to="{ name: 'FamilyRecipes' }">Family recipes</router-link></b-dropdown-item>
+          <b-dropdown-item><router-link :to="{ name: 'FavoriteRecipes' }">Favorite recipes</router-link></b-dropdown-item>
+          <b-dropdown-item><router-link :to="{ name: 'MyRecipes' }">My recipes</router-link></b-dropdown-item>
+        <b-dropdown-divider></b-dropdown-divider>
+      </b-dropdown>
+
       </span>
     </div>
-    <router-view />
-    <RecipePreviewListVue></RecipePreviewListVue>
+
+    <v-container class="grey lighten-5 mb-6">
+      <v-row
+        no-gutters
+        style="height: 150px;"
+      >
+        <v-col>
+        <router-view />
+            <RecipePreviewList title="Explore"></RecipePreviewList>
+
+        </v-col>
+      </v-row>
+    </v-container>
+    
+
+      
   </div>
 </template>
 
 <script>
-import RecipePreviewListVue from './components/RecipePreviewList.vue';
+import RecipePreviewList from './components/RecipePreviewList.vue';
 import Modal from './components/Modal.vue';
 
 export default {
@@ -98,9 +60,8 @@ export default {
     }
   },
   components: {
-    RecipePreviewListVue,
+    RecipePreviewList,
     Modal,
-    Modal
 },
   methods: {
     Logout() {

@@ -1,14 +1,11 @@
 <template>
     <div>
-        <div v-for="(r,index) in this.recipes" :key="index">
-            <RecipePreview :recipe="r"></RecipePreview>
-        </div>
-
+        <RecipePreviewList title="My Recipes"></RecipePreviewList>
     </div>
 </template>
 
 <script>
-import RecipePreview from '../components/RecipePreview.vue';
+import RecipePreviewList from '../components/RecipePreviewList.vue';
 
 export default{
     name:"MyRecipes",
@@ -18,7 +15,7 @@ export default{
         }
     },
     components:{
-        RecipePreview
+        RecipePreviewList
     }
 }
 </script>

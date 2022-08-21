@@ -7,64 +7,164 @@
             <slot name="header">Create Recipe</slot>
           </div>
 
-          <div class="modal-body">
-            <form id="contact-form">
-              <div class="form-group">
-                <input id="Recipe name" class="form-control" type="text" name="name" placeholder="Recipe name"/>
-              </div>
-              <div class="form-group">
-                <textarea class="form-control" id="description" placeholder="Short description" rows="1"></textarea>
-              </div>
-              <div class="form-group">
-                <textarea class="form-control" id="Ingredient" placeholder="Ingredient list" rows="3"></textarea>
-              </div>
-              <div class="form-group">
-                <textarea class="form-control" id="Instructions" placeholder="Instructions" rows="3"></textarea>
-              </div>
-              <div class="form-group">
-                <label style="width:100px;display:inline-block;" for="exampleInputEmail1">Time</label>
-                <select id="Time" style="width:150px;display:inline-block;" class="form-control form-control-sm">
-                  <option>Under 5 min</option>
-                  <option>5-10 min</option>
-                  <option>10-20 min</option>
-                  <option>20-30 min</option>
-                  <option>30-60 min</option>
-                  <option>1-1.5 hours</option>
-                  <option>1.5-2 hours</option>
-                  <option>Over 2 hours</option>
-                </select>
-              </div>
+    <b-form @submit.prevent="onRegister" @reset.prevent="onReset" @addPhoto.prevent="onPic">
+      <b-form-group
+        id="input-group-title"
+        label-cols-sm="3"
+        label="title:"
+        label-for="title"
+      >
+        <b-form-input
+          id="title"
+          v-model="$v.form.title.$model"
+          type="text"
+          :state="validateState('title')"
+        ></b-form-input>
+        <b-form-invalid-feedback v-if="!$v.form.title.required">
+          title is required
+        </b-form-invalid-feedback>
+        <b-form-invalid-feedback v-if="!$v.form.title.alpha">
+          title should contain only letters
+        </b-form-invalid-feedback>
+      </b-form-group>
+    
+      <b-form-group
+        id="input-group-description"
+        label-cols-sm="3"
+        label="description:"
+        label-for="description"
+      >
+        <b-form-input
+          id="description"
+          v-model="$v.form.description.$model"
+          type="text"
+          :state="validateState('description')"
+        ></b-form-input>
+        <b-form-invalid-feedback v-if="!$v.form.description.required">
+          description is required
+        </b-form-invalid-feedback>
+      </b-form-group>
+ 
+      <b-form-group
+        id="input-group-Instructions"
+        label-cols-sm="3"
+        label="Instructions:"
+        label-for="Instructions"
+      >
+        <b-form-input
+          id="Instructions"
+          v-model="$v.form.Instructions.$model"
+          type="text"
+          :state="validateState('Instructions')"
+        ></b-form-input>
+        <b-form-invalid-feedback v-if="!$v.form.Instructions.required">
+          Instructions is required
+        </b-form-invalid-feedback>
+      </b-form-group>
 
-              <div class="form-group">
-                <input id="Vegeterian" type='checkbox' name='system_type17' value='2' />
-                <span style="width:100px;display:inline-block;">Vegeterian</span>
-                <input id="Gluten" type='checkbox' name='system_type17' value='2' />
-                <span style="width:100px;display:inline-block;">Gluten Free</span>
-                <input id="Vegan" type='checkbox' name='system_type17' value='2' />
-                <span style="width:100px;display:inline-block;">Vegan</span>
-              </div>    
-              <div class="form-group">
-                <span style="width:100px;display:inline-block;">Serving</span>
-                <input id="Serving" type="number" name="Serving" min="1" max="100">
-              </div>
+      <b-form-group
+        id="input-group-extendedIngredients"
+        label-cols-sm="3"
+        label="extendedIngredients:"
+        label-for="extendedIngredients"
+      >
+        <b-form-input
+          id="extendedIngredients"
+          v-model="$v.form.extendedIngredients.$model"
+          type="text"
+          :state="validateState('extendedIngredients')"
+        ></b-form-input>
+      </b-form-group>
 
-              <div class="form-group">
-                <label for="exampleFormControlFile1">Recipe image</label>
-                <input type="file" class="form-control-file" id="image">
-              </div>
-              <button @click="submit_btn" type="submit" class="btn btn-primary">Submit</button>
-            </form>
-          </div>
+      <b-form-group
+        id="input-group-readyInMinutes"
+        label-cols-sm="3"
+        label="readyInMinutes:"
+        label-for="readyInMinutes"
+      >
+        <b-form-input
+          id="readyInMinutes"
+          v-model="$v.form.readyInMinutes.$model"
+          type="text"
+          :state="validateState('readyInMinutes')"
+        ></b-form-input>
+        <b-form-invalid-feedback v-if="!$v.form.readyInMinutes.required">
+          readyInMinutes is required
+        </b-form-invalid-feedback>
+      </b-form-group>
 
-          <div class="modal-footer">
-            <slot name="footer">
-              default footer
-              <button
-                class="modal-default-button"
-                @click="$emit('close')"
-              >OK</button>
-            </slot>
-          </div>
+      <b-form-group
+        id="input-group-Serving"
+        label-cols-sm="3"
+        label="Serving:"
+        label-for="Serving"
+      >
+        <b-form-input
+          id="Serving"
+          v-model="$v.form.Serving.$model"
+          type="Serving"
+          :state="validateState('Serving')"
+        ></b-form-input>
+        <b-form-invalid-feedback v-if="!$v.form.Serving.required">
+          Serving is required
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-Ingredient"
+        label-cols-sm="3"
+        label="Ingredient:"
+        label-for="Ingredient"
+      >
+        <b-form-input
+          id="Ingredient"
+          type="Ingredient"
+          v-model="$v.form.Ingredient.$model"
+          :state="validateState('Ingredient')"
+        ></b-form-input>
+        <b-form-invalid-feedback v-if="!$v.form.Ingredient.required">
+          Ingredient is required
+        </b-form-invalid-feedback>
+      
+      <b-form-file
+          id="image"
+          type="text"
+          v-model="$v.form.image.$model"
+          :state="validateState('image')"
+          placeholder="choose file"
+          drop-placeholder="Drop here"
+          accept="image/*"
+          class="form-control"
+        ></b-form-file>
+
+
+      </b-form-group>
+      <b-form-group>
+        <input type="checkbox" id="Vegeterian" class="unchecked" name="Vegeterian" ref="Vegeterian">
+        <label for="Vegeterian">Vegeterian</label>
+        <input type="checkbox" id="Vegan" class="unchecked" name="Vegan" ref="Vegan">
+        <label for="Vegan">Vegan</label>
+        <input type="checkbox" id="glutenFree" class="unchecked" name="glutenFree" ref="glutenFree">
+        <label for="glutenFree">Gluten Free</label>
+      </b-form-group>
+
+      <b-button type="reset" variant="danger">Reset</b-button>
+      <b-button
+        type="submit"
+        variant="primary"
+        style="width:250px;"
+        class="ml-5 w-75 btn-submit"
+        >Submit</b-button
+      >
+      </b-form>
+
+      <div class="modal-footer">
+        <button
+          class="modal-default-button"
+          @click="$emit('close')"
+        >Close</button>
+      </div>
+
         </div>
       </div>
     </div>
@@ -72,7 +172,10 @@
 </template>
 
 <script>
-import { METHODS } from 'http';
+import {
+  required,
+  alpha
+} from "vuelidate/lib/validators";
 
 export default {
   props: {
@@ -80,49 +183,122 @@ export default {
   },
   data() {
     return{
-      errors: [],
-      name: null,
-      description: null,
-      Instructions: null,
-      Time: null,
-      Gluten: false,
-      Vegan: false,
-      Vegeterian: false,
-      Serving: 0,
-      image: null,
-      Ingredient: null
+      form: {
+        title: "",
+        description: "",
+        Instructions: "",
+        glutenFree: false,
+        Vegan: false,
+        Vegeterian: false,
+        extendedIngredients: "",
+        readyInMinutes: 0,
+        Serving: 0,
+        Ingredient: "",
+        submitError: undefined,
+        image: ""
+      },
+      validated: false
+    }
+  },
+  validations: {
+    form: {
+      title: {
+        required,
+        alpha
+      },
+      description:{
+        required,
+      },
+      Instructions:{
+        required,
+      },
+      readyInMinutes:{
+        required,
+        Number
+      },
+      Serving:{
+        required,
+        Number
+      },
+      Ingredient: {
+        required
+      },
+      extendedIngredients:{
+
+      },
+      image:{
+
+      }
     }
   },
   methods:{
-    submit_btn(){
-      console.log("!");
-      this.name = document.getElementById("Recipe name").value;
-      this.description = document.getElementById("description").value;
-      this.Instructions = document.getElementById("Ingredient").value;
-      this.Time = document.getElementById("Instructions").value;
-      
-      console.log("2");
-
+    onRegister() {
+      // console.log("register method called");
+      this.$v.form.$touch();
+      if (this.$v.form.$anyError) {
+        return;
+      }
+      //console.log("register method go");
+      this.Register();
     },
-    checkForm: function (e) {
-      console.log("!");
-      console.log("2");
-      
-        
-      
+    onReset() {
+      this.form = {
+        title: "",
+        description: "",
+        Instructions: "",
+        extendedIngredients: "",
+        glutenFree: false,
+        Vegan: false,
+        Vegeterian: false,
+        readyInMinutes: 0,
+        Serving: 0,
+        Ingredient: "",
+        image: ""
+      };
+      this.$nextTick(() => {
+        this.$v.$reset();
+      });
+    },
+    validateState(param) {
+      const { $dirty, $error } = this.$v.form[param];
+      return $dirty ? !$error : null;
+    },
+    async Register() {
+      try {
+        if(document.getElementById("Vegeterian").checked){
+          this.form.Vegeterian = true;
+        }
+        if(document.getElementById("vegan").checked){
+          this.form.vegan = true;
+        }
+         if(document.getElementById("glutenFree").checked){
+          this.form.glutenFree = true;
+        }
 
-      // this.errors = [];
 
-      // if (!this.name) {
-      //   this.errors.push('Name required.');
-      // }
-      // if (!this.age) {
-      //   this.errors.push('Age required.');
-      // }
-
-      e.preventDefault();
-      return true;
-    }
+        const response = await this.axios.post(
+          // "https://test-for-3-2.herokuapp.com/user/Register",
+          this.$root.store.server_domain + "/users/myRecipes",
+          {
+            title: this.form.title,
+            description: this.form.description,
+            instructions: this.form.Instructions,
+            extendedIngredients: this.form.extendedIngredients, 
+            readyInMinutes: this.form.readyInMinutes, //int
+            servings: this.form.Serving, //int
+            Ingredient: this.form.Ingredient, //bool
+            glutenFree: this.form.glutenFree, //bool
+            vegan: this.form.vegan, //bool
+            vegetarian: this.form.vegetarian,
+            image : this.form.image
+          },
+          
+        );
+      } catch (err) {
+        //console.log(err.response);
+        this.form.submitError = err.response.data.message;
+      }
+    },
   },
   mounted(){
     console.log("2");

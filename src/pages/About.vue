@@ -16,6 +16,8 @@
                 <p class="title">CEO & Founder</p>
                 <p>CEO, founder and creator of this page and many others.</p>
                 <p>nirai@post.bgu.ac.il</p>
+                <p><a href="https://nircohen1.github.io/205597040/">visit assigment_1</a></p>
+                <p><a href="https://web-development-environments-2022.github.io/assignment2-208447870_205597040/">visit assigment_2</a></p>
                 <p><button class="button">Contact</button></p>
             </div>
             </div>
