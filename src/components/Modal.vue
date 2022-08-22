@@ -1,311 +1,209 @@
 <template>
-<div id="wrapper">
-  <div id="openModalDiv">  
-    <b-button id="openModal" v-b-modal.modal-id> + Add New Recipe</b-button>
-  </div>
-  <b-container class="container">
-    <b-modal id="modal-id" title="Create New Recipe" size="xl" ok-only>
-      <b-form @submit="onSave">
+  <Transition name="modal">
+    <div v-if="show" class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-container">
+          <div class="modal-header">
+            <slot name="header">Create Recipe</slot>
+          </div>
 
-        <b-row>
-          <b-col cols="6">
-            <b-form-group id="input-group-title" label-cols-sm="4" label="Title:" label-for="title" >
-              <b-form-input id="title" v-model="form.title" type="text"></b-form-input>
-            </b-form-group>
-          </b-col>
-          <b-col cols="6">
-            <b-row>
-            <b-col cols="3">
-                <label>Diet:</label>
-            </b-col>
+          <div class="modal-body">
+            <form id="contact-form">
+              <div class="form-group">
+                <input id="Recipe name" class="form-control" type="text" name="name" placeholder="Recipe name"/>
+              </div>
+              <div class="form-group">
+                <textarea class="form-control" id="description" placeholder="Short description" rows="1"></textarea>
+              </div>
+              <div class="form-group">
+                <textarea class="form-control" id="Ingredient" placeholder="Ingredient list" rows="3"></textarea>
+              </div>
+              <div class="form-group">
+                <textarea class="form-control" id="Instructions" placeholder="Instructions" rows="3"></textarea>
+              </div>
+              <div class="form-group">
+                <label style="width:100px;display:inline-block;">Time</label>
+                <input id="Time" type="number" name="Time" min="1" max="500">
+              </div>
 
-            <b-col cols="3">
-              <b-form-group id="input-group-vegan " label-for="vegan">
-                <input id="vegan" v-model="form.vegan" type="checkbox" />
-                <label for="vegan" class="checkboxes-diet-label">Vegan</label>
-              </b-form-group>
-            </b-col>
+              <div class="form-group">
+                <input id="Vegeterian" type='checkbox' name='system_type17' value='2' />
+                <span style="width:100px;display:inline-block;">Vegeterian</span>
+                <input id="Gluten" type='checkbox' name='system_type17' value='2' />
+                <span style="width:100px;display:inline-block;">Gluten Free</span>
+                <input id="Vegan" type='checkbox' name='system_type17' value='2' />
+                <span style="width:100px;display:inline-block;">Vegan</span>
+              </div>    
+              <div class="form-group">
+                <span style="width:100px;display:inline-block;">Serving</span>
+                <input id="Serving" type="number" name="Serving" min="1" max="100">
+              </div>
 
-            <b-col cols="3">
-              <b-form-group id="input-group-vegetarian " label-for="vegetarian">
-                <input id="vegetarian" v-model="form.vegetarian" type="checkbox" />
-                <label for="vegetarian" class="checkboxes-diet-label">Vegetarian</label>
-              </b-form-group>
-            </b-col>
+              <div class="form-group">
+                <label for="exampleFormControlFile1">Recipe image</label>
+                <input type="file" class="form-control-file" id="image">
+              </div>
+              <button @click="submit_btn" type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
 
-            <b-col cols="3">
-              <b-form-group id="input-group-glutenFree " label-for="glutenFree">
-                <input id="glutenFree" v-model="form.glutenFree" type="checkbox" />
-                <label for="glutenFree" class="checkboxes-diet-label">Gluten Free</label>
-              </b-form-group>
-            </b-col></b-row>
-          </b-col>
-        </b-row>
-      
-        <b-row>
-          <b-col cols="6">
-            <b-form-group id="input-group-readyInMinutes" label-cols-sm="4" label="Ready In Minutes:" label-for="readyInMinutes" >
-              <b-form-input id="readyInMinutes" v-model="form.readyInMinutes" type="number" ></b-form-input>
-            </b-form-group>
-          </b-col>
-
-          <b-col cols="6">
-            <b-form-group id="input-group-servings" label-cols-sm="4" label="Servings:" label-for="servings" >
-              <b-form-input id="servings" v-model="form.servings" type="number"></b-form-input>
-            </b-form-group>
-          </b-col>
-        </b-row>
-      
-        <b-form-group id="input-group-image" label-cols-sm="2" label="Image URL:" label-for="image" >
-          <b-form-input id="image" v-model="form.image" type="text"></b-form-input>
-        </b-form-group>
-
-        <b-row>
-          <b-col cols="2">
-              <label>Ingredients:</label>
-          </b-col>
-          <b-col cols="8">
-          </b-col>
-          <b-col cols="2" class="btn-add">
-            <b-button variant="outline-primary" @click="onAddIngredient">+ Add Ingredient</b-button>
-          </b-col>
-        </b-row>
-        <ol>
-          <li v-for="index in numberOfIngredients" :key="index" class="copy-row">
-              <b-col cols="12">
-                <b-row>
-                  <b-col cols="5">
-                    <b-form-group id="input-group-ingredientName" label-cols-sm="6" label="Ingredient Name:" label-for="ingredientName" >
-                      <b-form-input id="ingredientName" type="text" v-model="form.ingredients[index-1].ingredientName"></b-form-input>
-                    </b-form-group>
-                  </b-col>
-
-                  <b-col cols="4">
-                    <b-form-group id="input-group-measuringTool" label-cols-sm="6" label="Measuring Tool:" label-for="measuringTool" >
-                      <b-form-input id="measuringTool" type="text" v-model="form.ingredients[index-1].measuringTool"></b-form-input>
-                    </b-form-group>
-                  </b-col>
-
-                  <b-col cols="3">
-                    <b-form-group id="input-group-amount" label-cols-sm="6" label="Amount:" label-for="amount" >
-                      <b-form-input id="amount" type="number" v-model="form.ingredients[index-1].amount"></b-form-input>
-                    </b-form-group>
-                  </b-col>
-                </b-row>
-              </b-col>
-            </li>
-        </ol>
-      
-        <b-row>
-          <b-col cols="2">
-              <label>Instructions:</label>
-          </b-col>
-          <b-col cols="8">
-          </b-col>
-          <b-col cols="2" class="btn-add">
-            <b-button variant="outline-primary" @click="onAddInstruction">+ Add Step</b-button>
-          </b-col>
-        </b-row>
-
-        <ol>
-          <li v-for="index in numberOfInstructions" :key="index" class="copy-row">
-            <b-form-input id="instructions" v-model="form.instructions[index-1]" type="text" class="instruction-class"></b-form-input>
-          </li>
-        </ol>
-
-        <label :class="msgClass">{{msg}}</label>
-
-        <b-button
-          type="submit"
-          variant="primary"
-          style="width:100px;display:block;"
-          class="mx-auto w-100 btn-secondary"
-          >Save Recipe
-        </b-button>
-      </b-form>
-    </b-modal>
-  </b-container>
-</div>
-  
+          <div class="modal-footer">
+            <slot name="footer">
+              default footer
+              <button
+                class="modal-default-button"
+                @click="$emit('close')"
+              >OK</button>
+            </slot>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Transition>
 </template>
 
 <script>
-export default {
-  data(){
-    return{
-      form:{
-        title: "",
-        readyInMinutes: "",
-        ingredients: [], //recipe_id, ingredientName, measuringTool, amount
-        image: "",
-        vegan: false,
-        vegetarian: false,
-        glutenFree: false,
-        servings: "",
-        instructions: []
-        /*recipeOwner: "",
-        timePreparedInFamily: "",*/
-      },
-      msg: "",
-      msgClass:"error-msg"
-    }
-  },
-  computed: {
-    numberOfIngredients(){
-      return this.form.ingredients.length;
-    },
-    numberOfInstructions(){
-      return this.form.instructions.length;
-    }
-  },
-  methods: {
-    async onSave(){
-      this.msg = "";
-      const errors = this.ValidateForm();
-      if (errors.length==0){
-        try{
-          const response = await this.axios.post(this.$root.store.server_domain +"/users/added", this.form);
-          if (response.status !== 201){
-            throw "";
-          }
-          else{
-            this.msg = "Recipe was saved successfully!"
-            this.msgClass = "success-msg";
-          }
-        }
-        catch(error){
-          this.msg = "A problem accured while saving the recipe." + error.response.data.message;
-          this.msgClass = "error-msg";
-        }
-      }
-      else{ // update error label with current errors
-        let errorMsg = "You must fill-in all info in: ";
-        for (let i = 0; i < errors.length; i++){
-          errorMsg += errors[i];
-          if (i+1!=errors.length){
-            errorMsg += ", ";
-          }
-          else{
-            errorMsg += ".";
-          }
-        }
-        this.msgClass = "error-msg";
-        this.msg = errorMsg;
-      }
-    },
+import { METHODS } from 'http';
 
-    ValidateForm(){
-      let errors = [];
-      if (this.form.title.trim().length===0)
-        errors.push("title");
-      if (this.form.readyInMinutes.trim().length===0)
-        errors.push("ready in minutes");
-      if (this.form.servings.trim().length===0)
-        errors.push("servings");
-      if (this.form.image.trim().length===0)
-        errors.push("image url");
-      // check ingredients:
-      let goodIngredients = [...this.form.ingredients];
-      let index_goodIngredients = 0;
-      if (this.form.ingredients.length>0){
-        for (let i = 0; i < this.form.ingredients.length; i++){
-          if (this.form.ingredients[i].ingredientName.trim().length===0 &&
-            this.form.ingredients[i].measuringTool.trim().length===0 &&
-            this.form.ingredients[i].amount.trim().length===0){
-              goodIngredients.splice(i,1); // remove empty rows
-              continue;
-            }
-          else if (this.form.ingredients[i].ingredientName.trim().length===0 || // at least one is empty, not good - alert!
-            this.form.ingredients[i].measuringTool.trim().length===0 ||
-            this.form.ingredients[i].amount.trim().length===0){
-              errors.push("ingredient " + (index_goodIngredients+1));
-            }
-          index_goodIngredients+=1;
+export default {
+  props: {
+    show: Boolean
+  },
+  data() {
+    return{
+      errors: [],
+      name: null,
+      description: null,
+      Instructions: null,
+      Time: 1,
+      Gluten: false,
+      Vegan: false,
+      Vegeterian: false,
+      Serving: 0,
+      image: null,
+      Ingredient: null
+    }
+  },
+  methods:{
+    async submit_btn(){
+      console.log("!");
+      this.name = document.getElementById("Recipe name").value;
+      this.description = document.getElementById("description").value;
+      this.Instructions = document.getElementById("Instructions").value;
+      this.Time = document.getElementById("Time").value;
+      this.Serving = document.getElementById("Serving").value;
+      this.image = document.getElementById("image").value;
+
+      if(document.getElementById("Vegeterian").checked = true){ this.Vegeterian=true; }
+      if(document.getElementById("Vegan").checked = true){ this.Vegan=true;}
+      if(document.getElementById("Gluten").checked = true){ this.Gluten=true;}
+      
+      console.log("--------------------------------");
+      console.log(this.name);
+      console.log(this.description);
+      console.log(this.Instructions);
+      console.log(this.Gluten);
+      console.log(this.Vegeterian);
+      console.log(this.Serving);
+      console.log(this.image);
+      console.log(this.Ingredient);
+
+      console.log("2");
+
+      const response = await this.axios.post(
+        this.$root.store.server_domain + "/users/myRecipes",
+        {
+            title: this.name,
+            readyInMinutes: this.Time,
+            image: this.image,
+            vegan: this.Vegan,
+            vegetarian: this.Vegeterian,
+            glutenFree: this.Gluten,
+            servings: this.Serving,
+            extendedIngredients: this.description,
+            instructions: this.Instructions
         }
-        this.form.ingredients = goodIngredients;
-        if (this.form.ingredients.length===0){
-          errors.push("no ingredients were filled"); 
-        }
-      }
-      else{
-        errors.push("no ingredients were filled"); 
-      }
-      // check instructions and contcat them with <%> between steps:
-      let goodInstructions = [...this.form.instructions];
-      if (this.form.instructions.length>0){
-        for (let i = 0; i < this.form.instructions.length; i++){
-          if (this.form.instructions[i].trim().length===0){ //empty row
-            goodInstructions.splice(i,1);
-            continue; 
-          }
-        }
-        this.form.instructions = goodInstructions;
-        if (this.form.instructions.length===0){
-          errors.push("no instructions were filled"); 
-        }
-      }
-      else{
-        errors.push("no instructions were filled"); 
-      }
-      return errors;
-    },
-    onAddIngredient(){
-      this.form.ingredients.push({ingredientName:"",
-                              measuringTool:"",
-                              amount:""});
-    },
-    onAddInstruction(){
-      this.form.instructions.push("");
-    },
+      );
+
+    }
+  },
+  mounted(){
+    console.log("2");
+
+
   }
+}
+
+
+
+function callbackFunction(event) {
+    event.preventDefault();
+    const myFormData = new FormData(event.target);
+    console.log(myFormData);
 }
 </script>
 
 
 <style>
-  #wrapper{
-    height: 25px;
-  }
-
-  .btn-add{
-    text-align: right;
-    padding:5px;
-  }
-
-  .copy-row{
-    margin-left:15%;
-  }
-
-  .checkboxes-diet-label{
-    margin-left:10px;
+.modal-mask {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: table;
+  transition: opacity 0.3s ease;
+  
 }
 
-  .error-msg{
-    color: red;
-  }
+.modal-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+      overflow-y: initial !important
+
+}
+
+.modal-container {
+  width: 500px;
+  margin: 0px auto;
+  padding: 5px 30px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
+
   
-  .success-msg{
-    color:green;
-  }
+}
 
-  .instruction-class{
-    margin-bottom: 15px;
-  }
+.modal-header h3 {
+  margin-top: 0;
+  color: #42b983;
+}
 
-  #openModalDiv{
-    text-align: right;
-  }
+.modal-body {
+  margin: 5px 0;
+  height: 65vh;
+  overflow-y: auto;
+}
 
-  .form-control{
-    width: 100%;
-    text-align: left;
-    margin-left: 0%;
-  }
+.modal-default-button {
+  float: right;
+}
 
-  	.btn-secondary{
-	  background-color: #594545;
-	}
-	.btn-secondary:hover{
-	  background-color: #8c6565;
-	}
+
+.modal-enter-from {
+  opacity: 0;
+}
+
+.modal-leave-to {
+  opacity: 0;
+}
+
+.modal-enter-from .modal-container,
+.modal-leave-to .modal-container {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
 </style>

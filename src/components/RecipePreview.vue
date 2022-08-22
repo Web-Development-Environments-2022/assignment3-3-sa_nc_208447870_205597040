@@ -107,13 +107,15 @@ export default {
      },
      async addToFavorites(){
       const favorites = await this.axios.get(this.$root.store.server_domain + "/users/favorites");
-      if(favorites.includes(this.recipe.id)){
-        alert("already exist");
-      }
+      for (let i = 0; i < favorites.length; i++) {
+          if(this.recipe.id === favorites[i])
+            alert("already exist");
+            return;
+        }
       const response = await this.axios.post(
         this.$root.store.server_domain + "/users/favorites",
         {
-            recipe_id: this.recipe.id,
+            recipeId: this.recipe.id,
         }
       );
     }
