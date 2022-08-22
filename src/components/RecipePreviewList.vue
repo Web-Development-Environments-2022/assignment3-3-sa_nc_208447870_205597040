@@ -10,6 +10,7 @@
       </b-col>
     </b-row>
     <button @click="updateRecipes" v-if="title==='Explore'">More</button>
+    <b-row v-if="recipes.length===0">NO RESULTS</b-row>
   </b-container>
 </template>
 

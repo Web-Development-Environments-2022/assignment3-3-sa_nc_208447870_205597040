@@ -11,7 +11,7 @@
     img-alt="Image"
     img-top
     style="max-width: 20rem;"
-    class="mb-2"
+    :class="[this.watched ? 'watched' : 'mb-2']"
   >
     <b-card-text>
       <li>minutes: {{ recipe.readyInMinutes }}</li>
@@ -29,7 +29,6 @@
 
     </b-card-text>
 
-    <b-button href="#" variant="primary">Go somewhere</b-button>
   </b-card>
 
     <!-- <div class="column">
@@ -59,7 +58,7 @@
 export default {
   data() {
     return {
-
+      watched: false
     };
   },
   props: {
@@ -94,7 +93,17 @@ export default {
   },
   methods: {
      async addToWatched(){
-        // await this.axios.get(this.$root.store.server_domain + "/users/favorites");
+        console.log(this.recipe.id);
+        const watched = await this.axios.get(this.$root.store.server_domain + "/users/WatchedRecipes");
+        console.log(watched);
+
+        // for (let i = 0; i < watched.length; i++) {
+        //   if(this.recipe.id === watched[i])
+        //     return;
+        // }
+        // const res = await this.axios.post(this.$root.store.server_domain + "/users/WatchedRecipes", {
+        //   recipe_id: this.recipe.id,
+        // });
      },
      async addToFavorites(){
       const favorites = await this.axios.get(this.$root.store.server_domain + "/users/favorites");
@@ -182,18 +191,9 @@ html {
   color: white;
 }
 
-.container {
-  padding: 0 16px;
-}
 
-.container::after, .row::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-.title {
-  color: grey;
+.watched {
+  color: blueviolet;
 }
 
 .button {

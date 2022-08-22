@@ -19,7 +19,7 @@
       </span>
       <span v-else>
         {{ $root.store.username }}: <button class="btn btn-outline-success my-2 my-sm-0" @click="Logout">Logout</button>|
-        <button @click="CreateRecipe">Add recipe</button>|
+        <button class="btn btn-outline-success my-2 my-sm-0" id="show-modal" @click="showModal = true">Create recipe</button>
         <b-dropdown variant="success" id="dropdown-1" :text="$root.store.username">
           <b-dropdown-item><router-link :to="{ name: 'FamilyRecipes' }">Family recipes</router-link></b-dropdown-item>
           <b-dropdown-item><router-link :to="{ name: 'FavoriteRecipes' }">Favorite recipes</router-link></b-dropdown-item>
@@ -30,18 +30,15 @@
       </span>
     </div>
 
-    <v-container class="grey lighten-5 mb-6">
-      <v-row
-        no-gutters
-        style="height: 150px;"
-      >
-        <v-col>
-        <router-view />
-            <RecipePreviewList title="Explore"></RecipePreviewList>
 
-        </v-col>
-      </v-row>
-    </v-container>
+    <v-col>
+    <router-view />
+        <RecipePreviewList title="Explore"></RecipePreviewList>
+
+    </v-col>
+    <v-col v-if="!$root.store.username">
+      <RegisterPage></RegisterPage>
+    </v-col>
     
 
       
@@ -51,6 +48,7 @@
 <script>
 import RecipePreviewList from './components/RecipePreviewList.vue';
 import Modal from './components/Modal.vue';
+import RegisterPage from './pages/RegisterPage.vue';
 
 export default {
   name: "App",
@@ -62,6 +60,7 @@ export default {
   components: {
     RecipePreviewList,
     Modal,
+    RegisterPage
 },
   methods: {
     Logout() {
@@ -72,9 +71,6 @@ export default {
         this.$forceUpdate();
       });
     },
-    CreateRecipe() {
-      
-    }
   }
 };
 </script>

@@ -66,7 +66,7 @@
 
        <div class="pageList">
         <label style="width:100px;display:inline-block;" for="exampleInputEmail1">Intolerances</label>
-        <select value="" v-model="Intolerances" v-bin style="width:150px;display:inline-block;" class="form-control form-control-sm">
+        <select value="" v-model="Intolerances" style="width:150px;display:inline-block;" class="form-control form-control-sm">
           <option></option> 
           <option>Dairy</option> 
           <option>Egg</option> 
@@ -87,21 +87,21 @@
         <v-btn class="btn btn-outline-success my-2 my-sm-0" @click="startSearch">Search </v-btn>
       </v-col>
       <v-col cols="12" class="d-flex justify-center align-center  mb-4 mt-3 ">
-        <v-btn  :disable="onSearch" :class="[onSearch ? 'btn btn-outline-success my-2 my-sm-0' : 'gray']" @click="TimeSort">Sort by Time </v-btn>
+        <v-btn  :disable="this.onSearch" :class="[this.onSearch ? 'btn btn-outline-success my-2 my-sm-0' : 'gray']" @click="TimeSort">Sort by Time </v-btn>
       </v-col>
       <v-col cols="12" class="d-flex justify-center align-center  mb-4 mt-3 ">
-        <v-btn :disable="onSearch" :class="[onSearch ? 'btn btn-outline-success my-2 my-sm-0' : 'gray']" @click="PopolaritySort">Sort by Popolarity </v-btn>
+        <v-btn :disable="this.onSearch" :class="[this.onSearch ? 'btn btn-outline-success my-2 my-sm-0' : 'gray']" @click="PopolaritySort">Sort by Popolarity </v-btn>
       </v-col>
       <v-col v-if="!loaded" class="d-flex justify-center align-center spinner mt-12 " cols="12">
         <BreedingRhombusSpinner :animation-duration="infinite" :size="70" :color="'tomato'" />
       </v-col>
-      <v-col v-if="onSearch && recipes.length===0">
+      <v-col v-if="this.onSearch && recipes.length===0">
         <h1>No Results</h1>
       </v-col>
-      <v-col v-if="onSearch && recipes.length>0">
+      <v-col v-if="this.onSearch && recipes.length>0">
         <b-row>
           <b-col v-for="r in recipes" :key="r.id">
-            <RecipePreview title="recipe" class="recipePreview" :recipe="r" />
+            <RecipePreview title="recipe" class="recipePreview" :recipe="r" ></RecipePreview>
           </b-col>
         </b-row>
       </v-col>
@@ -111,6 +111,7 @@
 </template>
 
 <script>
+import RecipePreview from '../components/RecipePreview.vue';
 export default {
   name: "vuetify-test",
   data() {
@@ -121,19 +122,23 @@ export default {
       Diet: '',
       Intolerances: '',
       Cuisines: '',
-      onSearch: false
+      onSearch: false,
+      recipes: []
     }
 
   },
+  components:{
+    RecipePreview
+  },
   mounted(){
-    if(onSearch){
+    if(this.onSearch){
       this.recipes = this.$root.store.lastSearch;
     }
   },
   methods:
   {
     async startSearch() {
-      onSearch=true;
+      this.onSearch=true;
       try {
           const url= this.$root.store.server_domain + "/recipes/search/";
           const response = await this.axios.get(url, { params: { 
@@ -143,14 +148,14 @@ export default {
             intolerances: this.Intolerances,
             cuisine : this.Cuisines
         }});
-          const recipes = response.data;
-          this.recipes = [];
-          this.recipes.push(...recipes);
-          this.recipes=this.recipes.slice(0,3)
-          console.log(this.recipes)
-          this.$root.store.lastSearch = this.recipes
-        
-          // this.recipes = this.recipes.slice(0,this.form.numberOfSearch)
+
+        const recipes = response.data;
+        this.recipes = [];
+        this.recipes.push(...recipes);
+        this.recipes=this.recipes.slice(0,this.form.numberOfSearch)
+        console.log(this.recipes)
+        this.$root.store.lastSearch = this.recipes
+      
         
         
       } catch (err) {
